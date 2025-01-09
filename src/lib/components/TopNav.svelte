@@ -2,18 +2,24 @@
   let isDropdownOpen = false;
   let isProductDropdownOpen = false;
   
+  const workspace = { id: 4, name: 'Settings', icon: '⚙️' };
   const teams = [
-    { id: 1, name: 'Acme Inc', icon: '📦' },
-    { id: 2, name: 'Acme Corp.', icon: '〰️' },
-    { id: 3, name: 'Evil Corp.', icon: '✂️' }
+    { id: 0, name: 'Space', icon: '🌌' }, // Added Space at the top
+    { id: 1, name: 'Sale', icon: '⭐' },
+    { id: 2, name: 'Products', icon: '📦' },
+    { id: 3, name: 'Posts', icon: '🥁' }, // Changed to another drum icon
+    { id: 5, name: 'Links', icon: '🔗' },
+    { id: 6, name: 'Path', icon: '🌀' }, // Changed to a smooth curve-like icon
+    { id: 7, name: 'Analytics', icon: '📈' }, // Changed to a line graph icon
+    workspace
   ];
 
   let currentTeam = teams[0];
 
   const products = [
-    { id: 1, name: 'Design System', icon: '🎨' },
-    { id: 2, name: 'Analytics', icon: '📊' },
-    { id: 3, name: 'Developer API', icon: '⚡' }
+    { id: 1, name: 'Design System' },
+    { id: 2, name: 'Analytics' },
+    { id: 3, name: 'Developer API' }
   ];
 
   let currentProduct = products[0];
@@ -39,10 +45,10 @@
   }
 </script>
 
-<header class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200">
-  <div class="relative">
+<header class="fixed top-0 left-0 right-0 bg-white">
+  <div class="relative border-b border-gray-200">
     <button 
-      class="flex items-center w-full px-4 py-3 hover:bg-gray-50 border-b border-gray-100"
+      class="flex items-center w-full px-4 py-3 hover:bg-gray-50"
       on:click={toggleDropdown}
     >
       <div class="flex items-center flex-1">
@@ -52,124 +58,108 @@
           </div>
           <div>
             <div class="font-semibold">{currentTeam.name}</div>
-            <div class="text-sm text-gray-500">Enterprise</div>
           </div>
         </div>
       </div>
-      <svg 
-        class="w-5 h-5 text-gray-400 transform transition-transform duration-200" 
-        class:rotate-180={isDropdownOpen}
-        viewBox="0 0 20 20" 
-        fill="currentColor"
-      >
-        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-      </svg>
     </button>
+  </div>
 
-    {#if isDropdownOpen}
-      <div 
-        class="absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50"
-      >
-        <div class="p-4">
-          <div class="text-sm font-medium text-gray-500 mb-3">Teams</div>
-          <ul class="space-y-2">
-            {#each teams as team}
-              <li>
-                <button
-                  class="flex items-center w-full px-3 py-2 rounded-lg hover:bg-gray-50"
-                  class:bg-gray-50={currentTeam.id === team.id}
-                  on:click={() => selectTeam(team)}
-                >
-                  <div class="flex items-center gap-3 flex-1">
-                    <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
-                      {team.icon}
-                    </div>
-                    <span>{team.name}</span>
-                  </div>
-                  {#if currentTeam.id === team.id}
-                    <span class="text-sm text-gray-400">⌘ {team.id}</span>
-                  {/if}
-                </button>
-              </li>
-            {/each}
+  {#if isDropdownOpen}
+    <div 
+      class="fixed inset-0 top-[57px] bottom-[60px] bg-white border-r border-gray-200 shadow-lg flex flex-col"
+    >
+      <div class="flex-1 overflow-y-auto py-2 px-4">
+        <ul class="space-y-2">
+          {#each teams.filter(team => team.name !== 'Settings') as team}
             <li>
               <button
-                class="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-500"
+                class="flex items-center w-full px-3 py-2 rounded-lg hover:bg-gray-50"
+                class:bg-gray-50={currentTeam.id === team.id}
+                on:click={() => selectTeam(team)}
               >
-                <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
-                  +
+                <div class="flex items-center gap-3 flex-1">
+                  <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
+                    {team.icon}
+                  </div>
+                  <span>{team.name}</span>
                 </div>
-                <span>Add team</span>
+                {#if currentTeam.id === team.id}
+                  <span class="text-sm text-gray-400">⌘ {team.id}</span>
+                {/if}
               </button>
             </li>
-          </ul>
+          {/each}
+        </ul>
+      </div>
+      <div class="border-t border-gray-200 bg-white">
+        <div class="py-2 px-4">
+          <button
+            class="flex items-center w-full px-3 py-2 rounded-lg hover:bg-gray-50"
+            class:bg-gray-50={currentTeam.name === 'Settings'}
+            on:click={() => selectTeam(workspace)}
+          >
+            <div class="flex items-center gap-3 flex-1">
+              <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
+                ⚙️
+              </div>
+              <span>Settings</span>
+            </div>
+            {#if currentTeam.name === 'Settings'}
+              <span class="text-sm text-gray-400">⌘ 4</span>
+            {/if}
+          </button>
         </div>
       </div>
-    {/if}
+    </div>
+  {/if}
 
-    <button 
-      class="flex items-center w-full px-4 py-3 hover:bg-gray-50"
-      on:click={toggleProductDropdown}
-    >
-      <div class="flex items-center flex-1">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
-            {currentProduct.icon}
-          </div>
-          <div>
+  {#if !isDropdownOpen}
+    <div class="relative">
+      <button 
+        class="flex items-center w-full px-4 py-3 hover:bg-gray-50 border-b border-gray-200"
+        on:click={toggleProductDropdown}
+      >
+        <div class="flex items-center flex-1">
+          <div class="flex items-center gap-3">
             <div class="font-semibold">{currentProduct.name}</div>
           </div>
         </div>
-      </div>
-      <svg 
-        class="w-5 h-5 text-gray-400 transform transition-transform duration-200" 
-        class:rotate-180={isProductDropdownOpen}
-        viewBox="0 0 20 20" 
-        fill="currentColor"
-      >
-        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-      </svg>
-    </button>
+      </button>
 
-    {#if isProductDropdownOpen}
-      <div 
-        class="absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50"
-      >
-        <div class="p-4">
-          <div class="text-sm font-medium text-gray-500 mb-3">Products</div>
-          <ul class="space-y-2">
-            {#each products as product}
+      {#if isProductDropdownOpen}
+        <div 
+          class="relative bg-white border-b border-gray-200 shadow-lg"
+        >
+          <div class="py-2 px-4">
+            <div class="text-sm font-medium text-gray-500 mb-3">Products</div>
+            <ul class="space-y-2">
+              {#each products as product}
+                <li>
+                  <button
+                    class="flex items-center w-full px-3 py-2 rounded-lg hover:bg-gray-50"
+                    class:bg-gray-50={currentProduct.id === product.id}
+                    on:click={() => selectProduct(product)}
+                  >
+                    <div class="flex items-center gap-3 flex-1">
+                      <span>{product.name}</span>
+                    </div>
+                    {#if currentProduct.id === product.id}
+                      <span class="text-sm text-gray-400">⌘ {product.id}</span>
+                    {/if}
+                  </button>
+                </li>
+              {/each}
               <li>
                 <button
-                  class="flex items-center w-full px-3 py-2 rounded-lg hover:bg-gray-50"
-                  class:bg-gray-50={currentProduct.id === product.id}
-                  on:click={() => selectProduct(product)}
+                  class="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-500"
                 >
-                  <div class="flex items-center gap-3 flex-1">
-                    <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
-                      {product.icon}
-                    </div>
-                    <span>{product.name}</span>
-                  </div>
-                  {#if currentProduct.id === product.id}
-                    <span class="text-sm text-gray-400">⌘ {product.id}</span>
-                  {/if}
+                  <span>Add product</span>
                 </button>
               </li>
-            {/each}
-            <li>
-              <button
-                class="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-500"
-              >
-                <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg">
-                  +
-                </div>
-                <span>Add product</span>
-              </button>
-            </li>
-          </ul>
+            </ul>
+          </div>
         </div>
-      </div>
-    {/if}
-  </div>
+      {/if}
+    </div>
+  {/if}
 </header> 

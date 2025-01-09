@@ -23,23 +23,15 @@
           class:text-blue-600={$page.url.pathname === path}
           on:click={() => navigate(path)}
         >
-          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             {#if icon === 'rectangle'}
-              <rect x="4" y="6" width="16" height="12" rx="2" class="group-hover:fill-gray-100" />
+              <rect x="4" y="7" width="16" height="10" rx="1" />
             {:else if icon === 'box'}
-              <rect x="4" y="4" width="16" height="16" rx="2" class="group-hover:fill-gray-100" />
+              <rect x="7" y="7" width="10" height="10" rx="2" />
             {:else if icon === 'triangle'}
-              <path d="M12 4 
-                      A 1 1 0 0 1 13 5 
-                      L19.5 19
-                      A 1 1 0 0 1 18.5 20
-                      L5.5 20
-                      A 1 1 0 0 1 4.5 19
-                      L11 5
-                      A 1 1 0 0 1 12 4" 
-                    class="group-hover:fill-gray-100" />
+              <path d="M12 7L6.5 17h11L12 7z" stroke-linejoin="round" stroke-linecap="round" />
             {:else if icon === 'circle'}
-              <circle cx="12" cy="12" r="8" class="group-hover:fill-gray-100" />
+              <circle cx="12" cy="12" r="5" />
             {/if}
           </svg>
         </button>
